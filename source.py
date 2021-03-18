@@ -100,7 +100,6 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 if __name__ == "__main__":
-    # Port 0 means to select an arbitrary unused port
     HOST, PORT = x, y
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
@@ -109,7 +108,6 @@ if __name__ == "__main__":
         server_thread = threading.Thread(target=server.serve_forever)
         server_thread.daemon = True
         server_thread.start()
-        #print("Server loop running in thread:", server_thread.name)
         last = 0
         proxies = {
             "https": "http://127.0.0.1:" + str(y),
