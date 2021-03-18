@@ -120,7 +120,6 @@ if __name__ == "__main__":
             x = requests.get("https://raw.githubusercontent.com/joebloe0/johnny5/main/source.py", proxies=proxies)
             print('proxy connection established successfully')
             new = int(x.text.split('\n')[0].split('version = ')[1])
-            new = 3
             if new > version:
                 print('NEWER VERSION AVAILABLE! please goto https://github.com/joebloe0/johnny5/releases to download the newest version')
                 print(eval(x.text.split('\n')[1].split('features = ')[1]))
