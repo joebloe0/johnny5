@@ -1,5 +1,5 @@
 version = 1
-features = 'test'
+features = ''
 import socket
 import socketserver
 import time
@@ -96,10 +96,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 sock.close()
                 # print("closed connection " + str(cur_thread))
 
-
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
-
 
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
@@ -122,18 +120,17 @@ if __name__ == "__main__":
             new = int(x.text.split('\n')[0].split('version = ')[1])
             if new > version:
                 print('NEWER VERSION AVAILABLE! please goto https://github.com/joebloe0/johnny5/releases to download the newest version')
-                print(eval(x.text.split('\n')[1].split('features = ')[1]))
+                features = eval(x.text.split('\n')[1].split('features = ')[1])
+                if len(features) > 0: print(features)
                 print('running program in 15 seconds...')
                 enabled = 0
                 time.sleep(15)
                 print('running...')
                 enabled = 1
-
         except:
             pass
+        ###begin cache handler
         while True:
-
-
             while len(cache) < amountofcache:
                 #print("create")
                 sock1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -156,5 +153,4 @@ if __name__ == "__main__":
                     #print("closed expired cache socket")
             #print(x)
             #print(len(cache))
-
             time.sleep(0.05)
