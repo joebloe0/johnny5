@@ -5,6 +5,9 @@ import socketserver
 import time
 import threading
 import requests
+import subprocess
+import pymsgbox
+from winregistry import WinRegistry as Reg
 enabled = 1
 total = []
 cache = []
@@ -100,6 +103,7 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 if __name__ == "__main__":
+    reg = Reg()
     HOST, PORT = x, y
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
@@ -115,20 +119,26 @@ if __name__ == "__main__":
         try:
             x = requests.get("https://raw.githubusercontent.com/joebloe0/johnny5/main/source.py", proxies=proxies)
             print('proxy connection established successfully')
-            new = int(x.text.split('\n')[0].split('version = ')[1])
-            if new > version:
-                print('NEWER VERSION AVAILABLE! please goto https://github.com/joebloe0/johnny5/releases to download the newest version')
-                features = eval(x.text.split('\n')[1].split('features = ')[1])
-                if len(features) > 0: print(features)
-                print('running program in 15 seconds...')
-                enabled = 0
-                time.sleep(15)
-                print('running...')
-                enabled = 1
+            try:
+                new = int(x.text.split('\n')[0].split('version = ')[1])
+                if new > version:
+                    print('NEWER VERSION AVAILABLE! please goto https://github.com/joebloe0/johnny5/releases to download the newest version')
+                    features = eval(x.text.split('\n')[1].split('features = ')[1])
+                    if len(features) > 0: print(features)
+                    print('running program in 15 seconds...')
+                    enabled = 0
+                    time.sleep(15)
+                    print('running...')
+                    enabled = 1
+            except:
+                pass
+            pymsgbox.alert('Everything can be accessed, enjoy!', 'It Works!')
         except:
             pass
         ###begin cache handler
+        cycle = 99
         while True:
+            cycle = cycle+1
             while len(cache) < amountofcache:
                 #print("create")
                 sock1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -151,4 +161,18 @@ if __name__ == "__main__":
                     #print("closed expired cache socket")
             #print(x)
             #print(len(cache))
+            if cycle >= 100:
+                cycle = 0
+                try:
+                    reg.delete_key("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\AutoConfigURL")
+                except:
+                    pass
+                try:
+                    reg.write_value("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings", 'ProxyServer', '127.0.0.1:'+str(y), 'REG_SZ')
+                except:
+                    pass
+                try:
+                    reg.write_value("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings",'ProxyEnable', 1, 'REG_DWORD')
+                except:
+                    pass
             time.sleep(0.05)
