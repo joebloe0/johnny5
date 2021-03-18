@@ -1,5 +1,5 @@
 version = 1
-features = ''
+features = 'test'
 import socket
 import socketserver
 import time
