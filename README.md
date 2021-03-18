@@ -24,3 +24,5 @@ enablecache(1,0): determines if cache connection should be established, setting 
 
 external_proxy (string): the external proxy and ip, this can be a dns proxy too e.g. 'example.com:8080'
 
+if you want to host your own private proxy server you may do so by going to azure and hosting a virtual machine the best size choice is Standard_B1ls
+you can then install tinyproxy on that server and configure it to run on any port you need. after that you can use that port and the public ip of the virtual machine to connect to your proxy. if you want you can add a dns to the server. thus removing the '*.*.*.*' part of the connection.
