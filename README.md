@@ -5,6 +5,11 @@ this is a way of accessing a proxy through a proxy
 all you need is a proxy server you want to access and the proxy server you want to go through
 these are labeled external and interal proxies respectively
 
+instructions:
+1. download latest release
+2. change settings for your own conditions (see end of read me for informtion about your own proxy)
+3. run program
+
 options:
 use_proxy (1,0): tells the proxy if it should go through in internal proxy
 
